@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "bqplot": "^0.4.5"
+    "bqplot": "/Users/nearl/projects/bqplot/js"
   }
 }

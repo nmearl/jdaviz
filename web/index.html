@@ -42,7 +42,7 @@
     <div class="container-fluid p-0" id="content base">
         <section id='cubeviz'>
         <div class="intro-header">
-        
+
             <div class="container">
                 <!-- CubeViz -->
                 <div class='row'><div class='col-md-12'><h1>CubeViz <small class="text-muted">area for cubeviz widget</small></h1></div></div>
@@ -169,7 +169,7 @@
         crossorigin="anonymous"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    
+
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 
     <!-- custom javascript to handle stuff on page; move to standalone js file -->
@@ -218,7 +218,7 @@
 
             let stuff = ["state = image.state",
                         "data = state.data_collection[0]",
-                        "plateifu = data.meta['PLATEIFU']", 
+                        "plateifu = data.meta['PLATEIFU']",
                         "ra = data.meta['OBJRA']",
                         "dec = data.meta['OBJDEC']",
                         '{"plateifu": plateifu, "ra": ra, "dec":dec}'];
@@ -243,7 +243,7 @@
             };
         }
 
-        // this functions makes a call to the server to replace the widget content entirely 
+        // this functions makes a call to the server to replace the widget content entirely
         function update_stuff() {
             let stuff = ["from astropy.io import fits",
                          "from astroquery.mast import Observations",
@@ -251,7 +251,7 @@
                          "result = Observations.download_products(mast_qry['obsid'][mast_qry['filters']=='F475W'],productSubGroupDescription='DRZ')",
                          "f475w_image = fits.open(result['Local Path'][0])",
                          "sciim = app.add_data(f475w=f475w_image)[0]",
-                         "image = app.imshow(data=sciim)"];
+                         "image = app.imshow(data=sciim, widget='matplotlib')"];
             stuff = stuff.join('\n');
 
             let future = window.Manager.kernel.requestExecute({ code: stuff });
