@@ -1,6 +1,6 @@
 <template>
   <v-app id="web-app">
-    <v-app-bar dark dense flat app absolute clipped-right>
+    <v-app-bar dark dense flat app absolute clipped-right clipped-left>
       <jupyter-widget :widget="item.widget" v-for="item in state.tool_items" :key="item.name"></jupyter-widget>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -11,15 +11,45 @@
       </v-toolbar-items>
     </v-app-bar>
 
+    <g-sidebar right :visible="state.drawer">
+      <v-card flat tile class="overflow-y-auto fill-height" color="#f8f8f8">
+        <v-expansion-panels accordion multiple focusable flat tile>
+          <v-expansion-panel v-for="(tray, index) in state.tray_items" :key="index">
+            <v-expansion-panel-header>{{ tray.label }}</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <jupyter-widget :widget="tray.widget"></jupyter-widget>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <v-divider></v-divider>
+      </v-card>
+    </g-sidebar>
+
+    <g-sidebar :visible="state.drawer">
+      <v-card flat tile class="overflow-y-auto fill-height" color="#f8f8f8">
+        <v-expansion-panels accordion multiple focusable flat tile>
+          <v-expansion-panel v-for="(tray, index) in state.tray_items" :key="index">
+            <v-expansion-panel-header>{{ tray.label }}</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <jupyter-widget :widget="tray.widget"></jupyter-widget>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <v-divider></v-divider>
+      </v-card>
+    </g-sidebar>
+
     <v-content
       :style="checkNotebookContext() ? 'height: ' + state.settings.context.notebook.max_height + '; border: solid 1px #e5e5e5;' : ''"
     >
       <v-container class="fill-height pa-0" fluid>
-        <splitpanes @resize="relayout">
-          <pane size="75">
+        <v-row class="fill-height pa-0 ma-0">
+          <v-col class="fill-height pa-0 ma-0">
+                          <!-- :style="checkNotebookContext() ? 'height: 100%;' : 'height: calc(100vh - 48px)'" -->
+
             <golden-layout
-              :style="checkNotebookContext() ? 'height: 100%;' : 'height: calc(100vh - 48px)'"
               :has-headers="state.settings.visible.tab_headers"
+              style="height: 100%"
             >
               <gl-row :closable="false">
                 <g-viewer-tab
@@ -33,21 +63,8 @@
                 ></g-viewer-tab>
               </gl-row>
             </golden-layout>
-          </pane>
-          <pane size="25" v-if="state.drawer" style="background-color: #fafbfc;">
-            <v-card flat tile class="overflow-y-auto fill-height" color="#f8f8f8">
-              <v-expansion-panels accordion multiple focusable flat tile>
-                <v-expansion-panel v-for="(tray, index) in state.tray_items" :key="index">
-                  <v-expansion-panel-header>{{ tray.label }}</v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <jupyter-widget :widget="tray.widget"></jupyter-widget>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-              <v-divider></v-divider>
-            </v-card>
-          </pane>
-        </splitpanes>
+          </v-col>
+        </v-row>
       </v-container>
     </v-content>
     <v-snackbar
@@ -74,6 +91,11 @@ export default {
 </script>
 
 <style id="web-app">
+.v-btn:not(.v-btn--round).v-size--small {
+  min-width: 28px;
+  padding: 0px;
+}
+
 .v-toolbar__content,
 .vuetify-styles .v-toolbar__content {
   padding-left: 0px;

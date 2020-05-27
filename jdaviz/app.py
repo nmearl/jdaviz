@@ -97,8 +97,11 @@ class Application(TemplateMixin):
     # Pure vue components are added through the components attribute. This
     #  allows us to do recursive component instantiation only in the vue
     #  component file
-    components = Dict({"g-viewer-tab": load_template(
-        "container.vue", __file__, traitlet=False)}).tag(
+    components = Dict({
+        "g-viewer-tab": load_template(
+            "container.vue", __file__, traitlet=False),
+        'g-sidebar': load_template(
+            "sidebar.vue", __file__, traitlet=False)}).tag(
             sync=True, **w.widget_serialization)
 
     def __init__(self, configuration=None, *args, **kwargs):

@@ -17,22 +17,54 @@
       @resize="$emit('resize')"
       @destroy="$emit('destroy', viewer.id)"
     >
-      <v-card tile flat style="height: calc(100% - 2px); margin-top: -2px;">
-        <v-toolbar
-          dense
-          floating
-          absolute
-          right
-          :collapse="viewer.collapse"
-          elevation="1"
-          :width="viewer.collapse ? '48px' : null"
-        >
+      <v-toolbar dense height="32px" flat>
+        <!-- <v-sheet class="fill-height d-flex pa-2" style="flex-direction: column"> -->
+          <v-btn tile outlined small class="mx-1">
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+
+          <v-btn tile outlined small class="mx-1">
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+
+          <v-btn tile outlined small class="mx-1">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+
+          <v-btn tile outlined small class="mx-1">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+
+          <v-btn tile outlined small class="mx-1">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        <!-- </v-sheet> -->
+      </v-toolbar>
+      <!-- <v-card tile flat style="height: calc(100% - 2px); margin-top: -2px;"> -->
+      <!-- <v-navigation-drawer permanent mini-variant absolute>
+          <v-list nav dense>
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon>mdi-folder</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>My Files</v-list-item-title>
+            </v-list-item>
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon>mdi-account-multiple</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Shared with me</v-list-item-title>
+            </v-list-item>
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon>mdi-star</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Starred</v-list-item-title>
+            </v-list-item>
+          </v-list>
+      </v-navigation-drawer>-->
+      <!-- <v-toolbar dense absolute dark>
           <v-toolbar-items>
-            <v-btn icon @click="viewer.collapse = !viewer.collapse">
-              <v-icon v-if="viewer.collapse">mdi-menu</v-icon>
-              <v-icon v-else>mdi-menu-open</v-icon>
-            </v-btn>
-            <!-- <v-divider vertical></v-divider> -->
             <jupyter-widget :widget="viewer.tools"></jupyter-widget>
             <v-menu offset-y :close-on-content-click="false" style="z-index: 10">
               <template v-slot:activator="{ on }">
@@ -75,9 +107,11 @@
               </v-tabs-items>
             </v-menu>
           </v-toolbar-items>
-        </v-toolbar>
-        <jupyter-widget :widget="viewer.widget" style="width: 100%; height: 100%" />
-      </v-card>
+      </v-toolbar>-->
+      <!-- <v-container class="fill-height pa-0 ma-0"> -->
+      <jupyter-widget :widget="viewer.widget" style="width: 100%; height: calc(100% - 52px)" />
+      <!-- </v-container> -->
+      <!-- </v-card> -->
     </gl-component>
   </component>
 </template>
