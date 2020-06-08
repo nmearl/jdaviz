@@ -19,6 +19,7 @@ from glue_jupyter.state_traitlets_helpers import GlueState
 from ipygoldenlayout import GoldenLayout
 from ipysplitpanes import SplitPanes
 from traitlets import Dict
+from ipyvuedraggable import Draggable
 
 from .core.events import LoadDataMessage, NewViewerMessage, AddDataMessage, SnackbarMessage
 from .core.registries import tool_registry, tray_registry, viewer_registry
@@ -29,6 +30,7 @@ __all__ = ['Application']
 
 SplitPanes()
 GoldenLayout()
+Draggable()
 
 CONTAINER_TYPES = dict(row='gl-row', col='gl-col', stack='gl-stack')
 
@@ -43,7 +45,10 @@ class ApplicationState(State):
     dictionaries and makes it so incremental changes to nested values
     propagate to the traitlet in order to trigger a UI re-render.
     """
-    drawer = CallbackProperty(
+    plugin_drawer = CallbackProperty(
+        False, docstring="State of the plugins drawer.")
+
+    data_drawer = CallbackProperty(
         False, docstring="State of the plugins drawer.")
 
     snackbar = DictCallbackProperty({
@@ -81,6 +86,8 @@ class ApplicationState(State):
     stack_items = ListCallbackProperty(
         docstring="Nested collection of viewers constructed to support the "
                   "Golden Layout viewer area.")
+
+    dragging_data = CallbackProperty(False)
 
 
 class Application(TemplateMixin):
@@ -206,6 +213,9 @@ class Application(TemplateMixin):
         self.state.snackbar['color'] = msg.color
         self.state.snackbar['timeout'] = msg.timeout
         self.state.snackbar['show'] = True
+
+    def vue_on_data_dragged(self, state):
+        self.state.dragging_data = state == 'start'
 
     def load_data(self, path):
         """
