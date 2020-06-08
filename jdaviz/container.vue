@@ -5,6 +5,7 @@
       :stack="child"
       :key="index"
       :data-items="dataItems"
+      :dragging="dragging"
       @resize="$emit('resize')"
       @destroy="$emit('destroy', $event)"
       @data-item-selected="$emit('data-item-selected', $event)"
@@ -17,27 +18,32 @@
       @resize="$emit('resize')"
       @destroy="$emit('destroy', viewer.id)"
     >
-      <v-toolbar dense height="32px" flat>
+      <draggable :group="{name:'data'}" @add="onDataAdded" class="drop-target">
+        <v-overlay absolute :value="dragging">
+          <p>Drop data to plot {{ dragging }}</p>
+        </v-overlay>
+      </draggable>
+      <v-toolbar dense height="32px" flat color="#e2e4e8">
         <!-- <v-sheet class="fill-height d-flex pa-2" style="flex-direction: column"> -->
-          <v-btn tile outlined small class="mx-1">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
+        <v-btn tile outlined small class="mx-1">
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
 
-          <v-btn tile outlined small class="mx-1">
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
+        <v-btn tile outlined small class="mx-1">
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
 
-          <v-btn tile outlined small class="mx-1">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+        <v-btn tile outlined small class="mx-1">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
 
-          <v-btn tile outlined small class="mx-1">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+        <v-btn tile outlined small class="mx-1">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
 
-          <v-btn tile outlined small class="mx-1">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+        <v-btn tile outlined small class="mx-1">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
         <!-- </v-sheet> -->
       </v-toolbar>
       <!-- <v-card tile flat style="height: calc(100% - 2px); margin-top: -2px;"> -->
@@ -119,7 +125,10 @@
 <script>
 module.exports = {
   name: "g-viewer-tab",
-  props: ["stack", "dataItems"],
+  props: ["stack", "dataItems", "dragging"],
+  data() {
+    return { hiddenList: [] };
+  },
   created() {
     this.$parent.childMe = () => {
       return this.$children[0];
@@ -128,6 +137,9 @@ module.exports = {
   methods: {
     computeChildrenPath() {
       return this.$parent.computeChildrenPath();
+    },
+    onDataAdded(e) {
+      console.log("Data added");
     }
   },
   computed: {
@@ -140,3 +152,10 @@ module.exports = {
   }
 };
 </script>
+
+<style>
+/* Hide dragged element in target */
+.drop-target > [draggable="true"] {
+  display: none;
+}
+</style>
